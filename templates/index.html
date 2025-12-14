@@ -9,30 +9,31 @@
 </head>
 <body class="font-sans antialiased bg-gray-100">
 
-<!-- TOP BAR -->
-<header class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg sticky top-0 z-50">
-  <div class="flex flex-wrap justify-center md:justify-start items-center gap-6 text-white py-2 px-6">
+<header class="bg-gradient-to-r from-sky-400 via-white to-sky-400 shadow-lg sticky top-0 z-50">
+  <div class="flex flex-wrap justify-center md:justify-start items-center gap-6 text-white py-1 px-6">
     <div class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-yellow-300"></i> Mahendranagar, Kanchanpur, Nepal</div>
     <div class="flex items-center gap-2"><i class="fas fa-envelope text-green-300"></i> info@fwu.edu.np</div>
     <div class="flex items-center gap-2"><i class="fas fa-phone text-red-300"></i> 01-4970590</div>
   </div>
 
-  
-  <!-- NAV BAR -->
-  <div class="flex items-center gap-4">
-  <img src="{{ url_for('static', filename='photos/first.png') }}" 
-       alt="FWU Logo" 
-       class="h-16 w-auto rounded-lg shadow-lg">
-  <h1 class="text-2xl font-bold text-white">Far Western University</h1>
-    <nav class="flex items-center gap-4">
+  <div class="container mx-auto flex justify-between items-center px-6 py-2">
+    
+    <div class="flex items-center gap-4 mx-auto">
+      <img src="../static/photos/logo.png" alt="FWU Logo" class="h-32 w-auto object-contain">
+    </div>
+    
+    <nav class="absolute right-6 top-[72px] flex items-center gap-4"> 
       <a href="{{ url_for('index') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full"><i class="fas fa-home"></i> Home</a>
       <a href="{{ url_for('login') }}" class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-full"><i class="fas fa-user"></i> Login</a>
       <button id="menuButton" class="text-white text-xl"><i class="fas fa-ellipsis-v"></i></button>
     </nav>
+    
   </div>
 </header>
 
-<!-- 3 DOT MENU -->
+
+
+
 <div id="menu" class="hidden absolute top-20 right-6 bg-white shadow-xl rounded-lg w-48 z-50">
   <a href="#" class="flex items-center gap-2 px-4 py-3 text-gray-700 hover:bg-blue-100">
     <i class="fas fa-phone text-blue-600"></i> Contact Us
@@ -42,7 +43,7 @@
   </button>
 </div>
 
-<!-- SEARCH -->
+
 <div class="flex justify-center py-10">
   <form class="flex bg-white shadow-lg rounded-full overflow-hidden w-full max-w-xl">
     <input type="text" placeholder="Search here..." class="flex-1 px-6 py-3 focus:outline-none" />
@@ -50,7 +51,7 @@
   </form>
 </div>
 
-<!-- OUR HIGHLIGHTS -->
+
 <section class="py-16 bg-white" id="highlights">
   <h2 class="text-center text-4xl font-semibold mb-10">Our Highlights</h2>
   <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
@@ -72,7 +73,7 @@
   </div>
 </section>
 
-<!-- FOOTER -->
+
 <footer class="bg-gray-800 text-white py-12">
   <div class="container mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
