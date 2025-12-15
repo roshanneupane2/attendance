@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teacher 1 Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      background-image: url('../static/photos/images.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-color: #2e2e2e;
+    }
+    .dashboard-box {
+      background-color: #ebcdcd;
+      border: 1px solid #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.7);
+      padding: 2rem;
+      max-width: 24rem;
+      margin: auto;
+      margin-top: 5%;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #000000;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1rem;
+      color: #000000;
+    }
+    .btn-logout {
+      margin-top: 2rem;
+      padding: 0.5rem 1.5rem;
+      border-radius: 8px;
+      background: linear-gradient(to bottom, #fefefe 0%, #e0e0e0 100%);
+      border: 1px solid #aaaaaa;
+      color: #333333;
+      font-weight: bold;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+      transition: 0.2s;
+    }
+    .btn-logout:hover {
+      background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-box">
+    <h1>Welcome, {{ username }}!</h1>
+    <p>This is Teacher 1's Dashboard.</p>
+    <a href="{{ url_for('login') }}" class="btn-logout">Logout</a>
+  </div>
+</body>
+</html>
