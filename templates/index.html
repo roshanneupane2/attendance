@@ -44,10 +44,7 @@
 
   </header>
 
-  <div class="m-0 flex justify-center items-center">
-    <img src="../static/photos/logo.png" alt="FWU Logo" class="h-32 w-auto object-contain m-0 mx-auto">
-  </div>
-
+ 
   <div id="menu" class="hidden absolute top-20 right-6 bg-white shadow-xl rounded-lg w-48 z-50">
     <a href="#" class="flex items-center gap-2 px-4 py-3 text-gray-700 hover:bg-blue-100">
       <i class="fas fa-phone text-blue-600"></i> Contact Us
@@ -57,16 +54,25 @@
     </button>
   </div>
 
+ <div class="flex items-center w-full px-6">
+  
+  <!-- Logo (Left) -->
+  <img src="../static/photos/logo.png" alt="FWU Logo" class="h-32 w-auto object-contain">
 
-  <div class="flex justify-center py-0 mt-0">
-  <form class="flex bg-white shadow-lg rounded-full overflow-hidden w-full max-w-xl mt-0">
-    <input 
-      type="text" 
-      placeholder="Search student's name..." 
-      class="flex-1 px-6 py-3 focus:outline-none"
-    />
-    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-8">Search</button>
-  </form>
+  <!-- Search Bar (Center) -->
+  <div class="flex-1 flex justify-center">
+    <form class="flex bg-white shadow-lg rounded-full overflow-hidden w-full max-w-xl">
+      <input 
+        type="text" 
+        placeholder="Search student's name..." 
+        class="flex-1 px-6 py-3 focus:outline-none"
+      />
+      <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-8">
+        Search
+      </button>
+    </form>
+  </div>
+
 </div>
 
 
