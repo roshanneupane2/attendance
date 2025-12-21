@@ -2,11 +2,233 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Dashboard</title>
+  <title>Admin Dashboard | Attendance Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a; /* Slate-900 */
+      color: #f1f5f9;
+    }
+
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+    }
+
+    .input-field {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+      border-color: #fbbf24;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+      color: #000;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    table tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+  </style>
 </head>
-<body class="bg-gray-100 p-8">
-  <h1 class="text-3xl font-bold mb-4">Welcome Admin: {{ username }}</h1>
-  <p>Here you can manage teachers, view reports, etc.</p>
+<body class="min-h-screen flex flex-col">
+
+  <nav class="border-b border-white/10 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50 p-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="bg-yellow-400 p-2 rounded-lg">
+          <i class="fas fa-user-shield text-slate-900"></i>
+        </div>
+        <span class="font-bold text-xl tracking-tight">Admin<span class="text-yellow-400">Panel</span></span>
+      </div>
+      
+      <div class="flex items-center gap-6">
+        <div class="hidden md:block text-sm">
+          <span class="text-slate-400">Logged in as:</span>
+          <span class="font-semibold text-yellow-400">{{ username }}</span>
+        </div>
+        <a href="{{ url_for('logout') }}" class="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition-all border border-red-500/20">
+          <i class="fas fa-sign-out-alt mr-1"></i> Logout
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <div class="lg:col-span-1">
+        <div class="glass-card p-6 shadow-xl sticky top-24">
+          <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+            <i class="fas fa-user-plus text-yellow-400"></i> Register Teacher
+          </h2>
+          
+          <form id="add-teacher-form" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Username</label>
+              <input type="text" id="teacher-username" class="input-field w-full px-4 py-2 rounded-lg" placeholder="e.g. Roshan Neupane" required>
+            </div>
+            
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Password</label>
+              <input type="password" id="teacher-password" class="input-field w-full px-4 py-2 rounded-lg" placeholder="••••••••" required>
+            </div>
+            
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Faculty</label>
+              <select id="teacher-faculty" class="input-field w-full px-4 py-2 rounded-lg appearance-none" required>
+                <option value="" disabled selected>Select Faculty</option>
+                <option value="BE Computer">BE Computer</option>
+                <option value="BE Civil">BE Civil</option>
+                <option value="Architecture">Architecture</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn-primary w-full py-3 rounded-lg mt-4 transition-all">
+              Add Teacher Account
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2">
+        <div class="glass-card p-6 shadow-xl">
+          <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+            <i class="fas fa-clipboard-list text-yellow-400"></i> Attendance Reports
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <input type="date" id="attendance-date" class="input-field px-4 py-2 rounded-lg">
+            
+            <select id="filter-teacher" class="input-field px-4 py-2 rounded-lg">
+              <option value="">All Teachers</option>
+              {% for teacher in teachers %}
+                <option value="{{ teacher.username }}">{{ teacher.username }}</option>
+              {% endfor %}
+            </select>
+            
+            <button id="load-attendance" class="btn-primary px-4 py-2 rounded-lg">
+              <i class="fas fa-search mr-2"></i>Filter
+            </button>
+          </div>
+
+          <div class="overflow-x-auto border border-white/5 rounded-lg">
+            <table class="w-full text-left">
+              <thead class="bg-slate-800 text-slate-400 text-xs uppercase tracking-wider">
+                <tr>
+                  <th class="px-6 py-4">Teacher</th>
+                  <th class="px-6 py-4">Faculty</th>
+                  <th class="px-6 py-4">Date</th>
+                  <th class="px-6 py-4 text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody id="attendance-tbody" class="text-sm">
+                <tr>
+                  <td colspan="4" class="px-6 py-10 text-center text-slate-500 italic">
+                    Select a date or teacher and click Filter to load data.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // Add Teacher Logic
+    document.getElementById('add-teacher-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      const formData = {
+        username: document.getElementById('teacher-username').value.trim(),
+        password: document.getElementById('teacher-password').value.trim(),
+        faculty: document.getElementById('teacher-faculty').value
+      };
+
+      btn.disabled = true;
+      btn.innerText = "Processing...";
+
+      try {
+        const res = await fetch("{{ url_for('add_teacher') }}", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData)
+        });
+        const data = await res.json();
+        
+        alert(data.message);
+        if(data.success) location.reload();
+      } catch (err) {
+        alert("Error connecting to server.");
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Add Teacher Account";
+      }
+    });
+
+    // Load Attendance Logic
+    document.getElementById('load-attendance').addEventListener('click', async () => {
+      const date = document.getElementById('attendance-date').value;
+      const teacher = document.getElementById('filter-teacher').value;
+      const tbody = document.getElementById('attendance-tbody');
+
+      tbody.innerHTML = '<tr><td colspan="4" class="text-center py-10 text-yellow-400"><i class="fas fa-spinner fa-spin mr-2"></i>Loading...</td></tr>';
+
+      try {
+        const res = await fetch(`{{ url_for('teacher_attendance_report') }}?date=${date}&teacher=${teacher}`);
+        const data = await res.json();
+
+        tbody.innerHTML = '';
+        if(!data || data.length === 0){
+          tbody.innerHTML = `<tr><td colspan="4" class="text-center py-10 text-slate-500">No records found for this selection.</td></tr>`;
+          return;
+        }
+
+        data.forEach(record => {
+          const statusBadge = record.present 
+            ? '<span class="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs border border-green-500/20">Present</span>'
+            : '<span class="px-2 py-1 bg-red-500/20 text-red-400 rounded text-xs border border-red-500/20">Absent</span>';
+          
+          tbody.innerHTML += `
+            <tr class="hover:bg-white/5 border-b border-white/5 transition-colors">
+              <td class="px-6 py-4 font-semibold text-yellow-500">${record.username}</td>
+              <td class="px-6 py-4 text-slate-300">${record.faculty}</td>
+              <td class="px-6 py-4 text-slate-400">${record.attendance_date}</td>
+              <td class="px-6 py-4 text-center">${statusBadge}</td>
+            </tr>
+          `;
+        });
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center py-10 text-red-400">Error loading data.</td></tr>';
+      }
+    });
+  </script>
+
 </body>
 </html>
